@@ -1,0 +1,91 @@
+---
+aid: aarhus
+name: Aarhus University
+description: >-
+  Aarhus University (Aarhus Universitet) is a public research university in
+  Aarhus, Denmark, founded in 1928 and ranked #144 in the QS World University
+  Rankings 2025. It does not operate a unified, public developer portal. Its
+  most concrete machine-readable footprint is the Pure research information
+  portal (pure.au.dk), which exposes a Pure web-service / REST API (gated, it
+  returns HTTP 401 without credentials) and an OAI-PMH metadata service for
+  research outputs. Student-facing systems (mitstudie.au.dk / STADS course
+  catalog, timetables with iCal export) are web and feed based rather than
+  documented open APIs, and most code activity lives in departmental GitHub
+  organizations such as cs-au-dk rather than a central program.
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/aarhus/refs/heads/main/apis.yml
+tags:
+  - Education
+  - Higher Education
+  - University
+  - Research
+  - Open Data
+  - Denmark
+  - Europe
+created: '2026-06-03'
+modified: '2026-06-03'
+specificationVersion: '0.19'
+apis:
+  - aid: aarhus:pure-rest
+    name: Pure Research Portal Web Service (REST)
+    description: >-
+      Elsevier Pure research information system for Aarhus University exposing a
+      web-service / REST API for research outputs, persons, projects and related
+      metadata. The API is gated; unauthenticated requests to the API endpoints
+      return HTTP 401, so access requires an API key/credentials.
+    humanURL: https://pure.au.dk/portal/
+    baseURL: https://pure.au.dk/ws
+    tags: [ Research, Repository, Pure, Metadata, Denmark ]
+    properties:
+      - type: Documentation
+        url: https://pure.au.dk/portal/
+      - type: Authentication
+        url: https://pure.au.dk/ws
+  - aid: aarhus:pure-oai
+    name: Pure OAI-PMH Metadata Service
+    description: >-
+      OAI-PMH metadata harvesting service for the Aarhus University Pure
+      research portal, used to expose and harvest research-output metadata. The
+      service path resolves but the Identify verb returned a server error
+      during review, so endpoint behavior should be re-verified before relying
+      on it.
+    humanURL: https://pure.au.dk/portal/
+    baseURL: https://pure.au.dk/ws/oai
+    tags: [ Research, Repository, OAI-PMH, Metadata, Harvesting ]
+    properties:
+      - type: Documentation
+        url: https://pure.au.dk/portal/
+  - aid: aarhus:course-catalog
+    name: Course Catalogue and Timetable (mitstudie / STADS)
+    description: >-
+      Public course catalogue (kursuskatalog.au.dk) and the mitstudie.au.dk /
+      STADS student self-service environment, which provides web-based course
+      and timetable information. Timetables can be synchronized via an iCal feed
+      rather than a documented open API.
+    humanURL: https://kursuskatalog.au.dk/en
+    properties:
+      - type: Documentation
+        url: https://kursuskatalog.au.dk/en
+      - type: Documentation
+        url: https://studerende.au.dk/en/it-support/mitstudieaudk/
+common:
+  - type: Website
+    url: https://www.au.dk/en/
+  - type: GitHub
+    url: https://github.com/cs-au-dk
+  - type: LinkedIn
+    url: https://www.linkedin.com/school/aarhus-university/
+  - type: Plans
+    url: plans/aarhus-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/aarhus-rate-limits.yml
+  - type: FinOps
+    url: finops/aarhus-finops.yml
+  - type: Review
+    url: review.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

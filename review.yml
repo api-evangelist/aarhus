@@ -1,0 +1,42 @@
+---
+name: Aarhus University
+description: Aarhus University public developer/API footprint review for APIs.json cataloging.
+url: https://raw.githubusercontent.com/api-evangelist/aarhus/refs/heads/main/review.yml
+created: '2026-06-03'
+modified: '2026-06-03'
+reviews:
+  - date: '2026-06-03'
+    rating: 2
+    summary: >-
+      Aarhus University has no central, public developer portal. Verified live:
+      the official site, the Pure research portal, the public course catalogue,
+      and the cs-au-dk GitHub organization all resolve (HTTP 200). The Pure REST
+      web service exists but is gated (HTTP 401 unauthenticated). The Pure
+      OAI-PMH base path resolves but the Identify verb returned HTTP 500 during
+      review and should be re-verified. No endpoints were fabricated; gated and
+      erroring endpoints are documented honestly.
+    endpoints:
+      - url: https://www.au.dk/en/
+        status: 200
+        note: Official Aarhus University website (English).
+      - url: https://pure.au.dk/portal/
+        status: 200
+        note: Pure research information portal (human-facing).
+      - url: https://pure.au.dk/ws
+        status: 200
+        note: Pure web-service root resolves.
+      - url: https://pure.au.dk/ws/api/524/openapi.json
+        status: 401
+        note: Pure REST API gated; requires credentials/API key.
+      - url: https://pure.au.dk/ws/oai?verb=Identify
+        status: 500
+        note: OAI-PMH path resolves but Identify errored; re-verify.
+      - url: https://kursuskatalog.au.dk/en
+        status: 200
+        note: Public course catalogue (web).
+      - url: https://github.com/cs-au-dk
+        status: 200
+        note: Aarhus University Computer Science GitHub organization.
+      - url: https://www.linkedin.com/school/aarhus-university/
+        status: 999
+        note: Real LinkedIn school page; 999 is LinkedIn bot blocking, not absence.
