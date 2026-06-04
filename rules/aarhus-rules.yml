@@ -1,0 +1,62 @@
+---
+# Spectral ruleset for the Aarhus University Pure research information REST API.
+# Encodes patterns observed in the published OpenAPI 3.0.1 description
+# (https://pure.au.dk/ws/api/openapi.json, Pure API 5.35.3-4).
+formats:
+  - oas3
+rules:
+  aarhus-info-title:
+    description: API title should reference the Pure research information system.
+    given: $.info.title
+    severity: warn
+    then:
+      function: pattern
+      functionOptions:
+        match: "Pure"
+
+  aarhus-server-base:
+    description: Servers should be hosted under the Aarhus Pure web-service base path.
+    given: $.servers[*].url
+    severity: error
+    then:
+      function: pattern
+      functionOptions:
+        match: "/ws/api"
+
+  aarhus-api-key-security:
+    description: An api-key security scheme must be defined (Pure endpoints require a valid API key).
+    given: $.components.securitySchemes
+    severity: error
+    then:
+      field: api-key
+      function: truthy
+
+  aarhus-operation-tags:
+    description: Every operation should carry at least one tag for discoverability.
+    given: $.paths[*][get,put,post,delete]
+    severity: warn
+    then:
+      field: tags
+      function: truthy
+
+  aarhus-list-pagination-params:
+    description: Collection GET operations should expose size/offset paging used by the Pure API.
+    given: $.paths[?(@property.match(/s$/))].get.parameters
+    severity: info
+    then:
+      function: truthy
+
+  aarhus-uuid-path-params:
+    description: Single-resource paths address records by uuid path parameter.
+    given: $.paths[?(@property.match(/{uuid}$/))]
+    severity: info
+    then:
+      function: truthy
+
+  aarhus-no-empty-descriptions:
+    description: Schemas should document themselves with a description.
+    given: $.components.schemas[*]
+    severity: hint
+    then:
+      field: description
+      function: truthy

@@ -44,6 +44,16 @@ apis:
         url: https://pure.au.dk/portal/
       - type: Authentication
         url: https://pure.au.dk/ws
+      - type: OpenAPI
+        url: openapi/aarhus-pure-rest.yaml
+      - type: x-json-schema
+        url: json-schema/aarhus-researchoutput-schema.json
+      - type: x-vocabulary
+        url: vocabulary/aarhus-vocabulary.yml
+      - type: x-spectral-rules
+        url: rules/aarhus-rules.yml
+      - type: x-json-ld
+        url: json-ld/aarhus-context.jsonld
   - aid: aarhus:pure-oai
     name: Pure OAI-PMH Metadata Service
     description: >-

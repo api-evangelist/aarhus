@@ -1,0 +1,47 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "pure": "https://pure.au.dk/ws/api/#",
+    "@vocab": "https://pure.au.dk/ws/api/#",
+    "id": "@id",
+    "type": "@type",
+    "University": "schema:CollegeOrUniversity",
+    "name": "schema:name",
+    "url": "schema:url",
+    "description": "schema:description",
+    "Person": "schema:Person",
+    "firstName": "schema:givenName",
+    "lastName": "schema:familyName",
+    "ResearchOutput": "schema:ScholarlyArticle",
+    "title": "schema:headline",
+    "peerReview": "schema:isPeerReviewed",
+    "publicationDate": {
+      "@id": "schema:datePublished",
+      "@type": "schema:Date"
+    },
+    "Project": "schema:Project",
+    "acronym": "schema:alternateName",
+    "period": "schema:temporalCoverage",
+    "Organization": "schema:Organization",
+    "Activity": "schema:Action",
+    "uuid": "schema:identifier",
+    "pureId": "schema:identifier",
+    "portalUrl": {
+      "@id": "schema:url",
+      "@type": "@id"
+    },
+    "createdDate": {
+      "@id": "schema:dateCreated",
+      "@type": "schema:DateTime"
+    },
+    "modifiedDate": {
+      "@id": "schema:dateModified",
+      "@type": "schema:DateTime"
+    }
+  },
+  "@type": "University",
+  "name": "Aarhus University",
+  "url": "https://www.au.dk/en/",
+  "description": "Public research university in Aarhus, Denmark. Its machine-readable research footprint is exposed via the Pure research information REST API."
+}

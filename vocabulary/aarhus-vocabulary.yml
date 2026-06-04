@@ -1,0 +1,58 @@
+---
+vocabulary:
+  name: Aarhus University Pure API Vocabulary
+  description: >-
+    Controlled vocabulary of the core domain terms exposed by the Aarhus
+    University Pure research information REST API
+    (https://pure.au.dk/ws/api, Pure API 5.35.3-4). Terms are drawn from the
+    real OpenAPI description's object model and shared field conventions.
+  version: 5.35.3-4
+  terms:
+    - term: Person
+      definition: >-
+        A researcher or staff member affiliated with Aarhus University, with
+        names, affiliations, expertise and research-period metadata.
+      tags: [ entity, research, people ]
+    - term: ResearchOutput
+      definition: >-
+        A publication or other scholarly output (e.g. journal article, book,
+        dataset reference) with title, type, peer-review and publication-status
+        metadata.
+      tags: [ entity, research, publication ]
+    - term: Project
+      definition: >-
+        A research project with acronym, period, participants and managing or
+        collaborating organizations.
+      tags: [ entity, research, project ]
+    - term: Activity
+      definition: >-
+        A research or academic activity such as an editorial role, examination,
+        consultancy or host-visitor engagement.
+      tags: [ entity, research, activity ]
+    - term: Organization
+      definition: >-
+        An organizational unit at Aarhus University or an external organization
+        associated with people, projects and outputs.
+      tags: [ entity, organization ]
+    - term: pureId
+      definition: Internal numeric Pure identifier for a record.
+      tags: [ field, identifier ]
+    - term: uuid
+      definition: Stable UUID identifier used to address a record via the API.
+      tags: [ field, identifier ]
+    - term: portalUrl
+      definition: Public Pure research portal URL for the record.
+      tags: [ field, link ]
+    - term: ClassificationRef
+      definition: >-
+        A reference into a Pure classification scheme (URI plus localized term),
+        used for types, statuses, languages and similar enumerations.
+      tags: [ field, classification ]
+    - term: api-key
+      definition: >-
+        Required API key credential; unauthenticated requests to data endpoints
+        return HTTP 401.
+      tags: [ security, authentication ]
+    - term: pageInformation
+      definition: Paging envelope carrying offset and size for collection responses.
+      tags: [ field, pagination ]

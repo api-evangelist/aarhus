@@ -1,0 +1,40 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://pure.au.dk/ws/api/projects?size=10&offset=0",
+    "headers": {
+      "Accept": "application/json",
+      "api-key": "<your-pure-api-key>"
+    }
+  },
+  "response": {
+    "count": 5872,
+    "pageInformation": {
+      "offset": 0,
+      "size": 10
+    },
+    "items": [
+      {
+        "pureId": 24681012,
+        "uuid": "aaaa1111-bbbb-2222-cccc-3333dddd4444",
+        "createdDate": "2019-06-01T10:00:00.000+02:00",
+        "modifiedDate": "2026-02-18T08:22:00.000+01:00",
+        "portalUrl": "https://pure.au.dk/portal/en/projects/aaaa1111-bbbb-2222-cccc-3333dddd4444",
+        "acronym": "EXAMPLE",
+        "title": {
+          "value": "An Example Research Project"
+        },
+        "period": {
+          "startDate": "2019-09-01",
+          "endDate": "2023-08-31"
+        },
+        "links": [
+          {
+            "ref": "self",
+            "href": "https://pure.au.dk/ws/api/projects/aaaa1111-bbbb-2222-cccc-3333dddd4444"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://pure.au.dk/ws/api/research-outputs?size=10&offset=0",
+    "headers": {
+      "Accept": "application/json",
+      "api-key": "<your-pure-api-key>"
+    }
+  },
+  "response": {
+    "count": 215430,
+    "pageInformation": {
+      "offset": 0,
+      "size": 10
+    },
+    "items": [
+      {
+        "pureId": 98765432,
+        "uuid": "11112222-3333-4444-5555-666677778888",
+        "createdDate": "2021-03-15T09:30:00.000+01:00",
+        "modifiedDate": "2026-04-02T14:05:00.000+02:00",
+        "portalUrl": "https://pure.au.dk/portal/en/publications/11112222-3333-4444-5555-666677778888",
+        "title": {
+          "value": "An Example Research Output Title"
+        },
+        "type": {
+          "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontojournal/article",
+          "term": {
+            "en_GB": "Journal article"
+          }
+        },
+        "peerReview": true,
+        "publicationStatuses": [
+          {
+            "current": true,
+            "publicationStatus": {
+              "uri": "/dk/atira/pure/researchoutput/status/published",
+              "term": {
+                "en_GB": "Published"
+              }
+            },
+            "publicationDate": {
+              "year": 2026,
+              "month": 1
+            }
+          }
+        ],
+        "links": [
+          {
+            "ref": "self",
+            "href": "https://pure.au.dk/ws/api/research-outputs/11112222-3333-4444-5555-666677778888"
+          }
+        ]
+      }
+    ]
+  }
+}

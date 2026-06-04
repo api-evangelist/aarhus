@@ -1,0 +1,283 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/aarhus/main/json-structure/aarhus-researchoutput-structure.json",
+  "name": "AarhusResearchOutput",
+  "type": "object",
+  "description": "JSON Structure for the ResearchOutput object from the Aarhus University Pure research information REST API.",
+  "properties": {
+    "pureId": {
+      "type": "int64",
+      "description": "Pure database ID of the object, prefer using the UUID if it is present on the entity"
+    },
+    "uuid": {
+      "type": "string",
+      "description": "UUID, this is the primary identity of the entity"
+    },
+    "createdBy": {
+      "type": "string",
+      "description": "Username of creator"
+    },
+    "createdDate": {
+      "type": "datetime",
+      "description": "Date and time of creation"
+    },
+    "modifiedBy": {
+      "type": "string",
+      "description": "Username of the user that performed a modification"
+    },
+    "modifiedDate": {
+      "type": "datetime",
+      "description": "Date and time of last modification"
+    },
+    "portalUrl": {
+      "type": "string",
+      "description": "URL of the content on the Pure Portal"
+    },
+    "prettyUrlIdentifiers": {
+      "type": "array",
+      "description": "All pretty URLs",
+      "items": {
+        "type": "string"
+      }
+    },
+    "previousUuids": {
+      "type": "array",
+      "description": "UUIDs of other content items which have been merged into this content item (or similar)",
+      "items": {
+        "type": "string"
+      }
+    },
+    "version": {
+      "type": "string",
+      "description": "Used to guard against conflicting updates. For new content this is null, and for existing content the current value. The property should never be modified by a client, except in the rare case where th"
+    },
+    "title": {
+      "type": "object"
+    },
+    "subTitle": {
+      "type": "object"
+    },
+    "type": {
+      "type": "object"
+    },
+    "category": {
+      "type": "object"
+    },
+    "peerReview": {
+      "type": "boolean",
+      "description": "Indicates whether the research output is peer reviewed or not. Query the /research-outputs/allowed-peer-review-configurations endpoint for allowed values."
+    },
+    "internationalPeerReview": {
+      "type": "boolean",
+      "description": "Indicates whether the research output is internationally peer reviewed or not. Query the /research-outputs/allowed-peer-review-configurations endpoint for allowed values."
+    },
+    "publicationStatuses": {
+      "type": "array",
+      "description": "Manage the research output's different statuses and dates these were reached.",
+      "items": {
+        "type": "object"
+      }
+    },
+    "language": {
+      "type": "object"
+    },
+    "translatedTitle": {
+      "type": "object"
+    },
+    "translatedSubTitle": {
+      "type": "object"
+    },
+    "contributors": {
+      "type": "array",
+      "description": "Contributors and their affiliations",
+      "items": {
+        "type": "object"
+      }
+    },
+    "organizations": {
+      "type": "array",
+      "description": "A collection of organizational unit affiliations.",
+      "items": {
+        "type": "object"
+      }
+    },
+    "externalOrganizations": {
+      "type": "array",
+      "description": "A collection of external organization affiliations.",
+      "items": {
+        "type": "object"
+      }
+    },
+    "totalNumberOfContributors": {
+      "type": "int32",
+      "description": "The total number of authors from author collaborations."
+    },
+    "managingOrganization": {
+      "type": "object"
+    },
+    "submissionYear": {
+      "type": "int32",
+      "description": "The submission year of the research output."
+    },
+    "mainResearchArea": {
+      "type": "object"
+    },
+    "electronicVersions": {
+      "type": "array",
+      "description": "Electronic versions of this research output.",
+      "items": {
+        "type": "object"
+      }
+    },
+    "additionalFiles": {
+      "type": "array",
+      "description": "Additional files related to this research output.",
+      "items": {
+        "type": "object"
+      }
+    },
+    "links": {
+      "type": "array",
+      "description": "Additional links associated with this research output.",
+      "items": {
+        "type": "object"
+      }
+    },
+    "articleProcessingCharge": {
+      "type": "object"
+    },
+    "keywordGroups": {
+      "type": "array",
+      "description": "Groups of keywords associated with the research output.",
+      "items": {
+        "type": "object"
+      }
+    },
+    "bibliographicalNote": {
+      "type": "object"
+    },
+    "descriptions": {
+      "type": "array",
+      "description": "A list of descriptions for this research output. Query the relevant /research-outputs/allowed-*-description-types endpoint for allowed types.",
+      "items": {
+        "type": "object"
+      }
+    },
+    "visibility": {
+      "type": "object"
+    },
+    "workflow": {
+      "type": "object"
+    },
+    "identifiers": {
+      "type": "array",
+      "description": "Identifiers related to the research output.",
+      "items": {
+        "type": "object"
+      }
+    },
+    "prizes": {
+      "type": "array",
+      "description": "Prizes related to the research output,",
+      "items": {
+        "type": "object"
+      }
+    },
+    "pressMedias": {
+      "type": "array",
+      "description": "Press media related to the research output,",
+      "items": {
+        "type": "object"
+      }
+    },
+    "dataSets": {
+      "type": "array",
+      "description": "Data sets related to the research output,",
+      "items": {
+        "type": "object"
+      }
+    },
+    "studentThesis": {
+      "type": "array",
+      "description": "Student thesis related to the research output,",
+      "items": {
+        "type": "object"
+      }
+    },
+    "impacts": {
+      "type": "array",
+      "description": "Impacts related to the research output,",
+      "items": {
+        "type": "object"
+      }
+    },
+    "activities": {
+      "type": "array",
+      "description": "Activities related to the research output,",
+      "items": {
+        "type": "object"
+      }
+    },
+    "equipment": {
+      "type": "array",
+      "description": "Equipment related to the research output.",
+      "items": {
+        "type": "object"
+      }
+    },
+    "projects": {
+      "type": "array",
+      "description": "Projects related to the research output.",
+      "items": {
+        "type": "object"
+      }
+    },
+    "researchOutputs": {
+      "type": "array",
+      "description": "Other related research outputs.",
+      "items": {
+        "type": "object"
+      }
+    },
+    "customDefinedFields": {
+      "type": "object"
+    },
+    "images": {
+      "type": "array",
+      "description": "Image files with a maximum file size of 1MB",
+      "items": {
+        "type": "object"
+      }
+    },
+    "fundingText": {
+      "type": "object"
+    },
+    "fundingDetails": {
+      "type": "array",
+      "description": "The funding details for the research output",
+      "items": {
+        "type": "object"
+      }
+    },
+    "systemName": {
+      "type": "string",
+      "description": "The content system name"
+    },
+    "abstract": {
+      "type": "object"
+    },
+    "typeDiscriminator": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "category",
+    "contributors",
+    "language",
+    "managingOrganization",
+    "publicationStatuses",
+    "title",
+    "type",
+    "typeDiscriminator"
+  ]
+}
