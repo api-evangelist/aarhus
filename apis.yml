@@ -82,6 +82,12 @@ apis:
       - type: Documentation
         url: https://studerende.au.dk/en/it-support/mitstudieaudk/
 common:
+  - type: VulnerabilityDisclosure
+    url: security/aarhus-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/aarhus-domain-security.yml
+  - type: Authentication
+    url: authentication/aarhus-authentication.yml
   - type: Website
     url: https://www.au.dk/en/
   - type: GitHub
