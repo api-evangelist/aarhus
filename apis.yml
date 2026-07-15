@@ -82,6 +82,8 @@ apis:
       - type: Documentation
         url: https://studerende.au.dk/en/it-support/mitstudieaudk/
 common:
+  - type: AgenticAccess
+    url: agentic-access/aarhus-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/aarhus-vulnerability-disclosure.yml
   - type: DomainSecurity
