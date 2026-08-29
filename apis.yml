@@ -944,6 +944,9 @@ apis:
   - type: x-json-ld
     url: json-ld/aarhus-context.jsonld
 common:
+  - type: CapabilityMap
+    url: capabilities/aarhus-capability-edges.yml
+    name: Aarhus University Business Capability Map
   - type: AgenticAccess
     url: agentic-access/aarhus-agentic-access.yml
   - type: VulnerabilityDisclosure
