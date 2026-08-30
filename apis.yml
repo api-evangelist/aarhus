@@ -1,65 +1,94 @@
 ---
 aid: aarhus
 name: Aarhus University
+x-type: university
+x-category: Public Research University
 description: >-
-  Aarhus University (Aarhus Universitet) is a public research university in
-  Aarhus, Denmark, founded in 1928 and ranked #144 in the QS World University
-  Rankings 2025. It does not operate a unified, public developer portal. Its
-  most concrete machine-readable footprint is the Pure research information
-  portal (pure.au.dk), which exposes a Pure web-service / REST API (gated, it
-  returns HTTP 401 without credentials) and an OAI-PMH metadata service for
-  research outputs. Student-facing systems (mitstudie.au.dk / STADS course
-  catalog, timetables with iCal export) are web and feed based rather than
-  documented open APIs, and most code activity lives in departmental GitHub
-  organizations such as cs-au-dk rather than a central program.
+  Aarhus University (Aarhus Universitet) is a public research university in Aarhus,
+  Denmark, founded in 1928, with roughly 38,000 students across five faculties. It
+  operates no central developer portal, no public API program, and no
+  general-purpose institutional API — api.au.dk, data.au.dk, developer.au.dk and
+  opendata.au.dk do not resolve. Its one genuinely institution-operated,
+  publicly readable machine-readable surface is the OAI-PMH metadata harvesting
+  service at pure.au.dk/ws/oai, which is live and fully functional: it identifies
+  itself as the Aarhus University repository, is administered from pure@au.dk,
+  offers five metadata profiles including the Danish national research-database
+  formats, and emits ORCID iDs for Aarhus researchers. Everything else in the
+  university's programmable footprint is a vendor's product running under the
+  institution's name — the Elsevier Pure research information REST API at
+  pure.au.dk/ws/api (gated, HTTP 401 without a key, and an Elsevier contract
+  regardless of the host it is served from), the Semestry MyTimetable service at
+  timetable.au.dk, and the ERDA/MiG research data archive at erda.au.dk. The
+  kursuskatalog.au.dk course catalogue and the mitstudie.au.dk student
+  self-service environment are web applications with no documented API.
+  Aarhus is a member of WAYF, Denmark's national identity federation, and
+  operates a SAML identity provider scoped to au.dk behind it. Code activity
+  lives in departmental GitHub organisations such as cs-au-dk rather than in any
+  central engineering programme.
 type: Index
 deliveryModel:
   model: saas
   open_source: false
-  commercial: true
+  commercial: false
   callable_host: true
-  label: Hosted service · you call their endpoint
-  confidence: high
+  label: Hosted service · one open harvesting endpoint on the institution's own host
+  confidence: medium
   source:
-  - openapi
-  - pricing
-  generated: '2026-08-28'
-  method: derived
+  - conformance/aarhus-conformance.yml
+  generated: '2026-08-30'
+  method: probed
 accessModel:
   pricing: free
-  onboarding: self-serve
+  onboarding: none
   trial: false
   try_now: true
-  public: false
-  label: Free · Self-serve signup
+  public: true
+  label: Free · Open OAI-PMH harvesting, no signup; Pure REST is credentialed
   confidence: high
   source:
-  - plans
-  - authentication
-  generated: '2026-07-22'
-  method: derived
+  - conformance/aarhus-conformance.yml
+  generated: '2026-08-30'
+  method: probed
 position: Consumer
 access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/aarhus.png
 url: https://raw.githubusercontent.com/api-evangelist/aarhus/refs/heads/main/apis.yml
 tags:
-  - Education
-  - Higher Education
-  - University
-  - Research
-  - Open Data
-  - Denmark
-  - Europe
+- University
+- Higher Education
+- Education
+- Research
+- Research Repository
+- Open Access
+- OAI-PMH
+- Identity Federation
+- Research Computing
+- Course Catalog
+- Denmark
+- Nordic
+- Europe
 created: '2026-06-03'
-modified: '2026-06-03'
+modified: '2026-08-30'
 specificationVersion: '0.23'
 apis:
 - aid: aarhus:pure-oai
-  name: Pure OAI-PMH Metadata Service
+  name: Aarhus University OAI-PMH Metadata Service
+  x-operator: institution
   description: >-
-    OAI-PMH metadata harvesting service for the Aarhus University Pure research portal, used to expose
-    and harvest research-output metadata. The service path resolves but the Identify verb returned a server
-    error during review, so endpoint behavior should be re-verified before relying on it.
+    Open Archives Initiative Protocol for Metadata Harvesting 2.0 service for
+    Aarhus University's research record. Verified live on 2026-08-30: the
+    Identify verb returns repositoryName "Aarhus University", adminEmail
+    pure@au.dk and an earliest datestamp of 2005-06-02. Five metadata prefixes
+    are offered — oai_dc, mods, fi-person, ddf-mxd and xmetadiss — the last two
+    being the Danish national research database (Forskningsdatabasen) profiles,
+    and the document declares the OpenAIRE CERIF 1.2 profile namespace. Records
+    are partitioned into persons:all, publications:all, publications:withFiles
+    and a per-year series from 1961 forward, and ListRecords returns real
+    Dublin Core with Aarhus authors' ORCID iDs inline. The repository software
+    beneath is Elsevier Pure, but the harvesting endpoint is served from the
+    university's own registrable domain, administered from an au.dk address,
+    and names Aarhus University as the repository — operating it is an
+    institutional act, so this surface is credited to Aarhus.
   humanURL: https://pure.au.dk/portal/
   baseURL: https://pure.au.dk/ws/oai
   tags:
@@ -68,907 +97,219 @@ apis:
   - OAI-PMH
   - Metadata
   - Harvesting
+  - Open Access
   properties:
   - type: Documentation
     url: https://pure.au.dk/portal/
-- aid: aarhus:course-catalog
-  name: Course Catalogue and Timetable (mitstudie / STADS)
+  - type: x-conformance
+    url: conformance/aarhus-conformance.yml
+- aid: aarhus:pure-rest
+  name: Elsevier Pure REST API — Aarhus University deployment
+  x-operator: tenant
   description: >-
-    Public course catalogue (kursuskatalog.au.dk) and the mitstudie.au.dk / STADS student self-service
-    environment, which provides web-based course and timetable information. Timetables can be synchronized
-    via an iCal feed rather than a documented open API.
+    Aarhus University's deployment of the Elsevier Pure research information
+    system REST API. The data is Aarhus's — its researchers, projects, research
+    outputs and organisational units — and the deployment runs on the
+    university's own host. The CONTRACT is not Aarhus's: the served OpenAPI
+    declares info.title "Pure API", info.contact.email pure-support@elsevier.com
+    and version 5.35.3-4, and the same document is shipped by at least ten other
+    institutions in this catalog. No copy of that specification is kept in this
+    repository, because saving it here would credit Aarhus University with
+    Elsevier's engineering — this is the exact misattribution the university
+    pipeline exists to prevent. The endpoint itself is credentialed: an
+    unauthenticated request to /ws/api/524.0/persons returns HTTP 401 "Full
+    authentication is required to access this resource". The specification is
+    publicly readable at https://pure.au.dk/ws/api/openapi.json for anyone who
+    wants to inspect the product, and it belongs in Elsevier's own profile.
+  humanURL: https://pure.au.dk/portal/
+  baseURL: https://pure.au.dk/ws/api
+  tags:
+  - Research Information
+  - CRIS
+  - Vendor Platform
+  - Tenant Deployment
+  properties:
+  - type: Documentation
+    url: https://pure.au.dk/portal/
+  - type: Authentication
+    url: https://pure.au.dk/ws/api
+- aid: aarhus:course-catalogue
+  name: Aarhus University Course Catalogue
+  x-operator: institution
+  description: >-
+    kursuskatalog.au.dk is Aarhus University's public course catalogue, built
+    and operated by the university on its own domain and served through AU's own
+    CDN and font hosts. It is a web application only. There is no documented
+    API, no JSON surface, and no real sitemap — a request for /sitemap.xml
+    returns the application shell with HTTP 200 rather than an XML document,
+    which is a soft-404 and is recorded here so no later pass mistakes it for a
+    machine-readable index. Recorded as an institution-operated surface with no
+    programmable interface, not as an API.
   humanURL: https://kursuskatalog.au.dk/en
+  tags:
+  - Course Catalog
+  - Registrar
+  - Web Only
   properties:
   - type: Documentation
     url: https://kursuskatalog.au.dk/en
   - type: Documentation
     url: https://studerende.au.dk/en/it-support/mitstudieaudk/
-- aid: aarhus:aarhus-activity-api
-  name: Aarhus University activity API
-  description: The activity API from Aarhus University — 39 operation(s) for activity.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - Activity
-  tags_raw:
-  - activity
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-activity-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-application-api
-  name: Aarhus University application API
-  description: The application API from Aarhus University — 36 operation(s) for application.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - Application
-  tags_raw:
-  - application
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-application-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-authorcollaboration-api
-  name: Aarhus University authorCollaboration API
+- aid: aarhus:timetable
+  name: Aarhus University Timetable (MyTimetable)
+  x-operator: tenant
   description: >-
-    The authorCollaboration API from Aarhus University — 9 operation(s) for authorcollaboration.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags: []
-  tags_raw:
-  - authorCollaboration
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-authorcollaboration-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-award-api
-  name: Aarhus University award API
-  description: The award API from Aarhus University — 37 operation(s) for award.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
+    timetable.au.dk is Aarhus University's timetabling service. The host is the
+    university's own, but the product is MyTimetable by Semestry — the served
+    page identifies itself as "Powered by MyTimetable, created by Semestry" —
+    and the iCal subscription feeds it offers are a Semestry product feature
+    rather than Aarhus engineering. Recorded as a tenant deployment: real
+    institutional service, vendor's contract.
+  humanURL: https://timetable.au.dk/
   tags:
-  - award
+  - Timetable
+  - Course Catalog
+  - iCalendar
+  - Tenant Deployment
   properties:
-  - type: OpenAPI
-    url: openapi/aarhus-award-api-openapi.yml
   - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-classificationscheme-api
-  name: Aarhus University classificationScheme API
+    url: https://timetable.au.dk/
+- aid: aarhus:erda
+  name: Aarhus University ERDA Research Data Archive
+  x-operator: tenant
   description: >-
-    The classificationScheme API from Aarhus University — 7 operation(s) for classificationscheme.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags: []
-  tags_raw:
-  - classificationScheme
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-classificationscheme-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-concept-api
-  name: Aarhus University concept API
-  description: The concept API from Aarhus University — 4 operation(s) for concept.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
+    erda.au.dk is Aarhus University's Electronic Research Data Archive, running
+    on the university's own infrastructure with AU and external user sign-in
+    paths and companion hosts at int.erda.au.dk, cert.erda.au.dk and
+    ext.erda.au.dk. The platform is the MiG / ERDA software originating at the
+    University of Copenhagen's SCIENCE faculty — the deployment still carries the
+    erda-ucph-science skin and credits The MiG Project — so the archive is
+    Aarhus's data on another institution's platform. No public API surface was
+    found; the archive is reached through its web interface and standard
+    file-transfer protocols behind authentication.
+  humanURL: https://erda.au.dk/
   tags:
-  - concept
+  - Research Data
+  - Data Archive
+  - Tenant Deployment
   properties:
-  - type: OpenAPI
-    url: openapi/aarhus-concept-api-openapi.yml
   - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-conferenceseries-api
-  name: Aarhus University conferenceSeries API
-  description: The conferenceSeries API from Aarhus University — 14 operation(s) for conferenceseries.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags: []
-  tags_raw:
-  - conferenceSeries
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-conferenceseries-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-contract-api
-  name: Aarhus University contract API
-  description: The contract API from Aarhus University — 26 operation(s) for contract.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - Contract
-  tags_raw:
-  - contract
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-contract-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-course-api
-  name: Aarhus University course API
-  description: The course API from Aarhus University — 27 operation(s) for course.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - course
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-course-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-dataset-api
-  name: Aarhus University dataSet API
-  description: The dataSet API from Aarhus University — 30 operation(s) for dataset.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - Dataset
-  tags_raw:
-  - dataSet
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-dataset-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-education-api
-  name: Aarhus University education API
-  description: The education API from Aarhus University — 14 operation(s) for education.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - Education
-  tags_raw:
-  - education
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-education-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-equipment-api
-  name: Aarhus University equipment API
-  description: The equipment API from Aarhus University — 28 operation(s) for equipment.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - Equipment
-  tags_raw:
-  - equipment
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-equipment-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-ethicalreview-api
-  name: Aarhus University ethicalReview API
-  description: The ethicalReview API from Aarhus University — 22 operation(s) for ethicalreview.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags: []
-  tags_raw:
-  - ethicalReview
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-ethicalreview-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-event-api
-  name: Aarhus University event API
-  description: The event API from Aarhus University — 22 operation(s) for event.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - Event
-  tags_raw:
-  - event
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-event-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-externalorganization-api
-  name: Aarhus University externalOrganization API
-  description: >-
-    The externalOrganization API from Aarhus University — 29 operation(s) for externalorganization.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags: []
-  tags_raw:
-  - externalOrganization
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-externalorganization-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-externalperson-api
-  name: Aarhus University externalPerson API
-  description: The externalPerson API from Aarhus University — 22 operation(s) for externalperson.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags: []
-  tags_raw:
-  - externalPerson
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-externalperson-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-fingerprint-api
-  name: Aarhus University fingerprint API
-  description: The fingerprint API from Aarhus University — 3 operation(s) for fingerprint.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - fingerprint
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-fingerprint-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-fundingopportunity-api
-  name: Aarhus University fundingOpportunity API
-  description: >-
-    The fundingOpportunity API from Aarhus University — 21 operation(s) for fundingopportunity.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags: []
-  tags_raw:
-  - fundingOpportunity
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-fundingopportunity-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-impact-api
-  name: Aarhus University impact API
-  description: The impact API from Aarhus University — 31 operation(s) for impact.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - Impact
-  tags_raw:
-  - impact
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-impact-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-journal-api
-  name: Aarhus University journal API
-  description: The journal API from Aarhus University — 22 operation(s) for journal.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - journal
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-journal-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-keywordgroupconfiguration-api
-  name: Aarhus University keywordGroupConfiguration API
-  description: >-
-    The keywordGroupConfiguration API from Aarhus University — 7 operation(s) for keywordgroupconfiguration.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags: []
-  tags_raw:
-  - keywordGroupConfiguration
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-keywordgroupconfiguration-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-milestone-api
-  name: Aarhus University milestone API
-  description: The milestone API from Aarhus University — 24 operation(s) for milestone.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - milestone
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-milestone-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-organization-api
-  name: Aarhus University organization API
-  description: The organization API from Aarhus University — 34 operation(s) for organization.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - Organization
-  tags_raw:
-  - organization
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-organization-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-person-api
-  name: Aarhus University person API
-  description: The person API from Aarhus University — 58 operation(s) for person.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - Persons
-  tags_raw:
-  - person
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-person-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-personexpertise-api
-  name: Aarhus University personExpertise API
-  description: The personExpertise API from Aarhus University — 7 operation(s) for personexpertise.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags: []
-  tags_raw:
-  - personExpertise
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-personexpertise-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-pressmedia-api
-  name: Aarhus University pressMedia API
-  description: The pressMedia API from Aarhus University — 24 operation(s) for pressmedia.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags: []
-  tags_raw:
-  - pressMedia
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-pressmedia-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-prize-api
-  name: Aarhus University prize API
-  description: The prize API from Aarhus University — 29 operation(s) for prize.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - prize
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-prize-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-project-api
-  name: Aarhus University project API
-  description: The project API from Aarhus University — 33 operation(s) for project.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - Project
-  tags_raw:
-  - project
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-project-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-publisher-api
-  name: Aarhus University publisher API
-  description: The publisher API from Aarhus University — 18 operation(s) for publisher.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - Publishers
-  tags_raw:
-  - publisher
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-publisher-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-researchoutput-api
-  name: Aarhus University researchOutput API
-  description: The researchOutput API from Aarhus University — 67 operation(s) for researchoutput.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags: []
-  tags_raw:
-  - researchOutput
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-researchoutput-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-role-api
-  name: Aarhus University role API
-  description: The role API from Aarhus University — 2 operation(s) for role.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - Role
-  tags_raw:
-  - role
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-role-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-semester-api
-  name: Aarhus University semester API
-  description: The semester API from Aarhus University — 8 operation(s) for semester.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - semester
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-semester-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-specialization-api
-  name: Aarhus University specialization API
-  description: The specialization API from Aarhus University — 8 operation(s) for specialization.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - specialization
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-specialization-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-studentproject-api
-  name: Aarhus University studentProject API
-  description: The studentProject API from Aarhus University — 26 operation(s) for studentproject.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags: []
-  tags_raw:
-  - studentProject
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-studentproject-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-studentthesis-api
-  name: Aarhus University studentThesis API
-  description: The studentThesis API from Aarhus University — 26 operation(s) for studentthesis.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags: []
-  tags_raw:
-  - studentThesis
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-studentthesis-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-thesaurus-api
-  name: Aarhus University thesaurus API
-  description: The thesaurus API from Aarhus University — 5 operation(s) for thesaurus.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - thesaurus
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-thesaurus-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
-- aid: aarhus:aarhus-user-api
-  name: Aarhus University user API
-  description: The user API from Aarhus University — 7 operation(s) for user.
-  humanURL: https://pure.au.dk/portal/
-  baseURL: https://pure.au.dk/ws
-  tags:
-  - User
-  tags_raw:
-  - user
-  properties:
-  - type: OpenAPI
-    url: openapi/aarhus-user-api-openapi.yml
-  - type: Documentation
-    url: https://pure.au.dk/portal/
-  - type: Authentication
-    url: https://pure.au.dk/ws
-  - type: x-json-schema
-    url: json-schema/aarhus-researchoutput-schema.json
-  - type: x-vocabulary
-    url: vocabulary/aarhus-vocabulary.yml
-  - type: x-spectral-rules
-    url: rules/aarhus-rules.yml
-  - type: x-json-ld
-    url: json-ld/aarhus-context.jsonld
+    url: https://erda.au.dk/
 common:
-  - type: CapabilityMap
-    url: capabilities/aarhus-capability-edges.yml
-    name: Aarhus University Business Capability Map
-  - type: AgenticAccess
-    url: agentic-access/aarhus-agentic-access.yml
-  - type: VulnerabilityDisclosure
-    url: security/aarhus-vulnerability-disclosure.yml
-  - type: DomainSecurity
-    url: security/aarhus-domain-security.yml
-  - type: Authentication
-    url: authentication/aarhus-authentication.yml
-  - type: Website
-    url: https://www.au.dk/en/
-  - type: GitHub
-    url: https://github.com/cs-au-dk
-  - type: LinkedIn
-    url: https://www.linkedin.com/school/aarhus-university/
-  - type: Plans
-    url: plans/aarhus-plans-pricing.yml
-  - type: RateLimits
-    url: rate-limits/aarhus-rate-limits.yml
-  - type: FinOps
-    url: finops/aarhus-finops.yml
-  - type: Review
-    url: review.yml
+- type: Website
+  url: https://www.au.dk/en/
+- type: About
+  url: https://www.au.dk/en/about/profile/
+- type: ResearchRepository
+  url: https://pure.au.dk/portal/
+- type: CourseCatalog
+  url: https://kursuskatalog.au.dk/en
+- type: IdentityFederation
+  url: https://wayf.au.dk/
+- type: ResearchComputing
+  url: https://genome.au.dk/
+- type: Documentation
+  url: https://genome.au.dk/docs/
+- type: LibraryCatalog
+  url: https://library.au.dk/en
+- type: AIPolicy
+  url: https://studerende.au.dk/en/gai
+- type: AITooling
+  url: https://medarbejdere.au.dk/en/administration/it/guides/using-gai-responsibly
+- type: AIPolicy
+  url: https://educate.au.dk/en/teaching-with-technology/chatbots
+- type: PrivacyPolicy
+  url: https://international.au.dk/about/profile/privacy-policy/
+- type: TermsOfService
+  url: https://international.au.dk/about/profile/cookies-policy/
+- type: SecurityTxt
+  url: https://au.dk/.well-known/security.txt
+- type: GitHub
+  url: https://github.com/cs-au-dk
+- type: LinkedIn
+  url: https://www.linkedin.com/school/aarhus-university/
+- type: x-conformance
+  url: conformance/aarhus-conformance.yml
+- type: VulnerabilityDisclosure
+  url: security/aarhus-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/aarhus-domain-security.yml
+- type: Plans
+  url: plans/aarhus-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/aarhus-rate-limits.yml
+- type: FinOps
+  url: finops/aarhus-finops.yml
+- type: Review
+  url: review.yml
+x-coverage:
+  state: covered
+  reason: covered
+  generated: '2026-08-30'
+  method: probed
+  detail: >-
+    Every surface class the university pipeline hunts was probed on 2026-08-30
+    and the result is a thin but complete and honest profile. Aarhus University
+    operates exactly one public, readable, institution-operated machine-readable
+    API: the OAI-PMH 2.0 harvesting service at pure.au.dk/ws/oai, which is fully
+    functional across Identify, ListMetadataFormats, ListSets and ListRecords and
+    carries ORCID iDs for Aarhus researchers. There is no central developer
+    portal and no open-data portal — api.au.dk, data.au.dk, developer.au.dk,
+    open.au.dk, opendata.au.dk and services.au.dk all return NXDOMAIN. The
+    course catalogue and student self-service systems are web-only; their
+    /sitemap.xml is a soft-404 returning the application shell. Timetabling is
+    Semestry MyTimetable and the research data archive is the University of
+    Copenhagen's ERDA/MiG platform, both deployed on au.dk hosts and both
+    recorded as tenant relationships. Identity federation is real and was
+    confirmed in the WAYF national federation aggregate, which carries au.dk as
+    a Shibboleth metadata scope. GenomeDK, the university's HPC facility, is
+    documented across 78 pages but exposes no API. This profile previously
+    carried 37 OpenAPI definitions and 128 derived artifacts; all of them were
+    the Elsevier Pure product contract (info.title "Pure API", contact
+    pure-support@elsevier.com, version 5.35.3-4) split per tag, and all were
+    removed in this run. Expect the score to fall, because the artifact volume
+    it was resting on was never Aarhus University's.
+  evidence:
+  - url: https://pure.au.dk/ws/oai?verb=Identify
+    status: 200
+  - url: https://pure.au.dk/ws/oai?verb=ListMetadataFormats
+    status: 200
+  - url: https://pure.au.dk/ws/oai?verb=ListSets
+    status: 200
+  - url: https://pure.au.dk/ws/api/524.0/persons
+    status: 401
+  - url: https://pure.au.dk/ws/api/openapi.json
+    status: 200
+  - url: https://kursuskatalog.au.dk/en
+    status: 200
+  - url: https://kursuskatalog.au.dk/sitemap.xml
+    status: 200
+  - url: https://timetable.au.dk/
+    status: 200
+  - url: https://erda.au.dk/
+    status: 200
+  - url: https://genome.au.dk/
+    status: 200
+  - url: https://genome.au.dk/docs/
+    status: 200
+  - url: https://metadata.wayf.dk/wayf-metadata.xml
+    status: 200
+  - url: https://wayf.au.dk/
+    status: 200
+  - url: https://au.dk/.well-known/security.txt
+    status: 200
+  - url: https://au.dk/llms.txt
+    status: 404
+  - url: https://www.au.dk/en/
+    status: 200
+  - url: https://library.au.dk/en
+    status: 200
+  - url: https://studerende.au.dk/en/gai
+    status: 200
+  - url: https://medarbejdere.au.dk/en/administration/it/guides/using-gai-responsibly
+    status: 200
+  - url: https://international.au.dk/about/profile/privacy-policy/
+    status: 200
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
