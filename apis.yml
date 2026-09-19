@@ -125,6 +125,11 @@ apis:
   baseURL: https://pure.au.dk/ws/api
   tags:
   - Research Information
+  - CRI
+  - Vendor Platform
+  - Tenant Deployment
+  tags_raw:
+  - Research Information
   - CRIS
   - Vendor Platform
   - Tenant Deployment
