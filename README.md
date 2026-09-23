@@ -64,7 +64,14 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Aarhus University (Aarhus Universitet) is a public research university in Aarhus, Denmark, founded in 1928 and ranked #144 in the QS World University Rankings 2025. This repository catalogs the university's public developer and API footprint as an [APIs.json](https://apisjson.org) profile. Aarhus does not run a unified public developer portal; its most concrete machine-readable surface is the Pure research portal, with most code activity living in departmental GitHub organizations.
+Aarhus University (Aarhus Universitet) is a public research university in Aarhus, Denmark, founded in
+1928. This repository catalogs the university's public developer and API footprint as an
+[APIs.json](https://apisjson.org) profile.
+
+Aarhus runs no central developer portal and no public API program. Its one genuinely
+institution-operated, publicly readable machine-readable surface is the **OAI-PMH metadata harvesting
+service at `pure.au.dk/ws/oai`**, which is live and fully functional. Everything else in its
+programmable footprint is a vendor's product running under the institution's name.
 
 - APIs.json: https://raw.githubusercontent.com/api-evangelist/aarhus/refs/heads/main/apis.yml
 - Run with Naftiko: https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=aarhus-api-evangelist&utm_content=repo
@@ -74,47 +81,93 @@ Aarhus University (Aarhus Universitet) is a public research university in Aarhus
 - Index
 - Consumer
 - 3rd-Party
+- University — Public Research University
 
 ## Tags
 
-Education, Higher Education, University, Research, Open Data, Denmark, Europe
+University, Higher Education, Education, Research, Research Repository, Open Access, OAI-PMH,
+Identity Federation, Research Computing, Course Catalog, Denmark, Nordic, Europe
 
-## APIs
+## Surfaces, and who operates each one
 
-- **Pure Research Portal Web Service (REST)** — Elsevier Pure research information API for research outputs, persons, and projects. Gated (HTTP 401 unauthenticated). Docs: https://pure.au.dk/portal/
-- **Pure OAI-PMH Metadata Service** — OAI-PMH harvesting of research-output metadata. Path resolves; Identify verb errored during review. Base: https://pure.au.dk/ws/oai — Docs: https://pure.au.dk/portal/
-- **Course Catalogue and Timetable (mitstudie / STADS)** — Public course catalogue plus the mitstudie.au.dk student self-service environment with iCal timetable export. Docs: https://kursuskatalog.au.dk/en and https://studerende.au.dk/en/it-support/mitstudieaudk/
+A university is a federation of buyers, not a producer. Every surface below carries an **operator**:
+`institution` means Aarhus runs the thing the contract describes, `tenant` means Aarhus runs the
+deployment but a vendor wrote the contract.
 
-## Plans
+| Surface | Operator | What it is |
+|---|---|---|
+| [OAI-PMH Metadata Service](https://pure.au.dk/ws/oai?verb=Identify) | **institution** | OAI-PMH 2.0, verified live. Identifies as the Aarhus University repository, administered from `pure@au.dk`, earliest datestamp 2005-06-02. Five metadata prefixes (`oai_dc`, `mods`, `fi-person`, `ddf-mxd`, `xmetadiss`), OpenAIRE CERIF 1.2 profile declared, sets by person/publication/year, and Aarhus authors' ORCID iDs inline in the records. |
+| [Course Catalogue](https://kursuskatalog.au.dk/en) | **institution** | Web application only. No API, no JSON, and no real sitemap — `/sitemap.xml` returns the app shell with HTTP 200, which is a soft-404. |
+| [Elsevier Pure REST API](https://pure.au.dk/ws/api) | tenant | Aarhus's data, Elsevier's contract. Gated: HTTP 401 unauthenticated. The specification is **not kept in this repository** — see below. |
+| [Timetable](https://timetable.au.dk/) | tenant | MyTimetable by Semestry, on an au.dk host. The iCal feeds are a vendor product feature. |
+| [ERDA Research Data Archive](https://erda.au.dk/) | tenant | Aarhus's deployment of the University of Copenhagen SCIENCE ERDA / MiG platform. No public API. |
 
-See [plans/aarhus-plans-pricing.yml](plans/aarhus-plans-pricing.yml).
+## Why there are no OpenAPI definitions here
 
-## Rate Limits
+This profile previously carried **37 OpenAPI definitions and 128 derived artifacts**. Every one of
+them was the **Elsevier Pure product contract** — `info.title: "Pure API"`, `info.contact.email:
+pure-support@elsevier.com`, `version: 5.35.3-4` — split one file per tag by our own refine step, and
+the same document is shipped by at least ten other institutions in this catalog.
 
-See [rate-limits/aarhus-rate-limits.yml](rate-limits/aarhus-rate-limits.yml).
+The deployment at `pure.au.dk` is real and it is Aarhus's. The **contract is Elsevier's**, and keeping
+it here credited Aarhus University with Elsevier's engineering. All 128 files were removed on
+2026-08-30 and the relationship is recorded instead as a `tenant` entry in `apis.yml`. The
+specification remains publicly readable at https://pure.au.dk/ws/api/openapi.json for anyone who
+wants to inspect the product; it belongs in Elsevier's own profile, not in Aarhus University's.
 
-## FinOps
+**A correct profile that lowers a score is the pipeline working.**
 
-See [finops/aarhus-finops.yml](finops/aarhus-finops.yml).
+## Domain standards
+
+Measured against the Kin Score `education` regime — see
+[conformance/aarhus-conformance.yml](conformance/aarhus-conformance.yml). Probed, not claimed:
+
+- **OAI-PMH 2.0** — conformant, verified across `Identify`, `ListMetadataFormats`, `ListSets` and `ListRecords`.
+- **ORCID** — conformant. Aarhus researchers' ORCID iDs are emitted inline in the harvested Dublin Core.
+- **SAML 2.0** — conformant. `au.dk` is carried as a `shibmd:Scope` in the WAYF national federation aggregate; WAYF is operated by DeiC and connected to eduGAIN.
+- **Shibboleth** — unverified. The federation metadata uses the Shibboleth namespace, but Aarhus's own IdP metadata is not publicly resolvable (`idp.au.dk` and `login.au.dk` do not resolve).
+- **Not claimed:** `lti`, `scim`, `oneroster`, `ed-fi`, `caliper`, `qti`, `datacite`, `crossref`. DOIs in the harvested metadata are publisher-registered and cited, not minted by Aarhus.
+
+## Plans, Rate Limits, FinOps
+
+- [plans/aarhus-plans-pricing.yml](plans/aarhus-plans-pricing.yml)
+- [rate-limits/aarhus-rate-limits.yml](rate-limits/aarhus-rate-limits.yml)
+- [finops/aarhus-finops.yml](finops/aarhus-finops.yml)
 
 ## Timestamps
 
 - Created: 2026-06-03
-- Modified: 2026-06-03
+- Modified: 2026-08-30
 
 ## Common Properties
 
 - Website: https://www.au.dk/en/
+- Research Repository: https://pure.au.dk/portal/
+- Course Catalog: https://kursuskatalog.au.dk/en
+- Identity Federation: https://wayf.au.dk/
+- Research Computing (GenomeDK): https://genome.au.dk/ — [docs](https://genome.au.dk/docs/)
+- Library Catalog: https://library.au.dk/en
+- AI Policy (students): https://studerende.au.dk/en/gai
+- AI Tooling (staff): https://medarbejdere.au.dk/en/administration/it/guides/using-gai-responsibly
+- Privacy Policy: https://international.au.dk/about/profile/privacy-policy/
+- security.txt: https://au.dk/.well-known/security.txt
 - GitHub: https://github.com/cs-au-dk
 - LinkedIn: https://www.linkedin.com/school/aarhus-university/
-- Plans: plans/aarhus-plans-pricing.yml
-- Rate Limits: rate-limits/aarhus-rate-limits.yml
-- FinOps: finops/aarhus-finops.yml
 - Review: review.yml
 
 ## Notes
 
-All entries were verified live on 2026-06-03. No endpoints were fabricated. The Pure REST API is gated (HTTP 401 without credentials). The Pure OAI-PMH base path resolves but the Identify verb returned HTTP 500 and should be re-verified. The course catalogue and timetables are web/iCal based rather than documented open APIs. The cs-au-dk GitHub organization is a Computer Science departmental org; Aarhus has multiple departmental/research orgs (e.g., CDS-AU-DK, AU-DIS, logsem) but no single central organization. The LinkedIn school page returns HTTP 999 due to LinkedIn bot blocking, not absence.
+All entries were re-verified live on **2026-08-30**. No endpoints were fabricated.
+
+- **Correction to the 2026-06-03 review:** it recorded the OAI-PMH `Identify` verb as returning
+  HTTP 500. It now returns a valid HTTP 200 OAI-PMH response, and the whole service is functional.
+- No central developer or open-data portal exists: `api.au.dk`, `data.au.dk`, `developer.au.dk`,
+  `open.au.dk`, `opendata.au.dk` and `services.au.dk` all return NXDOMAIN.
+- `au.dk/llms.txt` returns 404.
+- GenomeDK, the university's HPC facility, is documented across 78 pages but exposes no API.
+- The `cs-au-dk` GitHub organization is a Computer Science departmental org. Aarhus has several
+  departmental and research orgs but no single central one.
+- The LinkedIn school page returns HTTP 999 due to LinkedIn bot blocking, not absence.
 
 ## Maintainers
 

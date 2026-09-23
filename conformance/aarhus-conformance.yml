@@ -1,0 +1,133 @@
+---
+# authorship: written by API Evangelist tooling during the university pipeline
+# run of 2026-08-30. Every claim below was probed live; nothing is inferred
+# from a prose statement on an Aarhus University web page.
+generated: '2026-08-30'
+method: probed
+source: >-
+  Live probes of https://pure.au.dk/ws/oai (OAI-PMH verbs Identify,
+  ListMetadataFormats, ListSets, ListRecords) and of the WAYF federation
+  metadata aggregate at https://metadata.wayf.dk/wayf-metadata.xml.
+provider: Aarhus University
+providerId: aarhus
+regime: education
+description: >-
+  Domain-standard conformance for Aarhus University, measured against the Kin
+  Score `education` regulatory regime. Only standards for which a machine-readable
+  surface on an Aarhus-operated host returned real evidence are recorded. The
+  Elsevier Pure REST API that this repository previously carried is deliberately
+  NOT counted here: the contract is Elsevier's product contract, not Aarhus
+  University's, even though the deployment runs on pure.au.dk.
+
+conformance:
+
+- standard: oai-pmh
+  name: Open Archives Initiative Protocol for Metadata Harvesting 2.0
+  status: conformant
+  operator: institution
+  evidence:
+    location: https://pure.au.dk/ws/oai?verb=Identify
+    status: 200
+    detail: >-
+      Returns a valid OAI-PMH 2.0 Identify response declaring
+      repositoryName "Aarhus University", baseURL https://pure.au.dk/ws/oai,
+      protocolVersion 2.0, adminEmail pure@au.dk, granularity
+      YYYY-MM-DDThh:mm:ssZ and earliestDatestamp 2005-06-02T05:14:45Z.
+  supporting:
+  - location: https://pure.au.dk/ws/oai?verb=ListMetadataFormats
+    status: 200
+    detail: >-
+      Five metadata prefixes offered — oai_dc, mods, fi-person, ddf-mxd,
+      xmetadiss. fi-person and ddf-mxd are the Danish national research
+      database (Forskningsdatabasen) profiles; the document also declares the
+      OpenAIRE CERIF 1.2 profile namespace.
+  - location: https://pure.au.dk/ws/oai?verb=ListSets
+    status: 200
+    detail: >-
+      Sets are enumerated as persons:all, publications:all,
+      publications:withFiles and a per-year series running from
+      publications:year1961 forward.
+  - location: 'https://pure.au.dk/ws/oai?verb=ListRecords&metadataPrefix=oai_dc&set=publications:year2024'
+    status: 200
+    detail: 100 Dublin Core records returned in a single page; harvesting is genuinely functional, not merely advertised.
+  note: >-
+    The repository software underneath is Elsevier Pure, but the harvesting
+    endpoint is served from Aarhus University's own registrable domain, is
+    administered from pure@au.dk, and names Aarhus University as the
+    repository. Operating an OAI-PMH service is an institutional act.
+
+- standard: orcid
+  name: ORCID researcher identifiers
+  status: conformant
+  operator: institution
+  evidence:
+    location: 'https://pure.au.dk/ws/oai?verb=ListRecords&metadataPrefix=oai_dc&set=publications:year2024'
+    status: 200
+    detail: >-
+      Aarhus-affiliated authors are emitted with their ORCID iD inline in the
+      dc:creator field, e.g. "Rainsford, Dominic; id_orcid 0000-0002-2426-1956",
+      "Petersen, Anders Klostergaard; id_orcid 0000-0003-0821-4049" and
+      "Brøgger, Katja; id_orcid 0000-0002-5582-4889". The identifiers belong to
+      Aarhus researchers and are published on an Aarhus-operated endpoint.
+
+- standard: saml
+  name: SAML 2.0 identity federation
+  status: conformant
+  operator: institution
+  evidence:
+    location: https://metadata.wayf.dk/wayf-metadata.xml
+    status: 200
+    detail: >-
+      The WAYF (Where Are You From) federation aggregate — Denmark's national
+      research and education identity federation, operated by DeiC and connected
+      to eduGAIN — carries <shibmd:Scope regexp="false">au.dk</shibmd:Scope>
+      in the hub entity's md:Extensions. WAYF is hub-and-spoke: the au.dk scope
+      is asserted for the Aarhus University identity provider that sits behind
+      the hub, so Aarhus operates a SAML 2.0 IdP whose assertions are scoped to
+      its own domain.
+  supporting:
+  - location: https://wayf.au.dk/
+    status: 200
+    detail: >-
+      Aarhus University publishes its own institutional WAYF page
+      ("Introduktion til WAYF") on an au.dk host, documenting the federation
+      login its staff and students use.
+
+- standard: shibboleth
+  name: Shibboleth
+  status: unverified
+  operator: institution
+  evidence:
+    location: https://metadata.wayf.dk/wayf-metadata.xml
+    status: 200
+    detail: >-
+      The federation metadata uses the Shibboleth metadata extension namespace
+      (urn:mace:shibboleth:metadata:1.0) to carry the au.dk scope, which is
+      strong circumstantial evidence of a Shibboleth-family IdP. It is recorded
+      as unverified rather than conformant because Aarhus's own IdP metadata is
+      not published at a publicly resolvable URL — idp.au.dk and login.au.dk do
+      not resolve — so the implementation itself could not be probed directly.
+
+not_found:
+- standard: lti
+  detail: No public evidence of an institution-operated LTI surface. Brightspace is the AU LMS and any LTI conformance belongs to D2L, not to Aarhus.
+- standard: scim
+  detail: No public SCIM endpoint found on any au.dk host.
+- standard: oneroster
+  detail: OneRoster is a K-12 standard; no evidence, and none expected for a Danish research university.
+- standard: ed-fi
+  detail: Ed-Fi is a US K-12 data standard; not applicable and not present.
+- standard: caliper
+  detail: No Caliper analytics endpoint found.
+- standard: qti
+  detail: No QTI item-bank surface found on a public au.dk host.
+- standard: datacite
+  detail: >-
+    Not claimed. Aarhus deposits datasets that carry DOIs, but no
+    Aarhus-operated DataCite minting or resolution surface was found, and DOIs
+    appearing in harvested metadata are the registrants' — not Aarhus's.
+- standard: crossref
+  detail: >-
+    Not claimed, for the same reason. The DOIs visible in the OAI-PMH feed
+    (e.g. 10.1515/9781474441650-030) are publisher-registered and cited, not
+    minted by Aarhus University.
