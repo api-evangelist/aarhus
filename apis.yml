@@ -139,6 +139,7 @@ apis:
   - type: Authentication
     url: https://pure.au.dk/ws/api
 - aid: aarhus:course-catalogue
+  x-published: false
   name: Aarhus University Course Catalogue
   x-operator: institution
   description: >-
@@ -180,6 +181,7 @@ apis:
   - type: Documentation
     url: https://timetable.au.dk/
 - aid: aarhus:erda
+  x-published: false
   name: Aarhus University ERDA Research Data Archive
   x-operator: tenant
   description: >-
