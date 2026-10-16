@@ -1,24 +1,22 @@
-# Kin Score artifact — aarhus — 2026-09-05T055819
+# Kin Score artifact — aarhus — 2026-10-11T110117
 # The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
 ---
 kin_score:
   slug: aarhus
-  schema_version: 0.18.3
-  scored_at: '2026-09-05'
-  run_ts: 2026-09-05T055819
-  composite: 29.5
+  schema_version: 0.23.0
+  scored_at: '2026-10-11'
+  run_ts: 2026-10-11T110117
+  composite: 26.5
   band: thin
   facets:
-    discoverability: 75.9
+    discoverability: 73.2
     contract_quality: 4.4
-    governance: 0.0
-    operational_transparency: 26.3
-    developer_ergonomics: 21.4
-    commercial_clarity: 50.0
     contract_governance: 0.0
-    access_clarity: 50.0
+    operational_transparency: 24.2
+    developer_ergonomics: 21.4
+    access_clarity: 47.9
   agent_readiness:
-    score: 5.0
+    score: 3.1
     band: human-only
     dimensions:
       spec_presence: false
@@ -29,7 +27,7 @@ kin_score:
       idempotency: false
       error_semantics: false
       openapi_examples: false
-      rate_limit_signal: documented
+      rate_limit_signal: derived
       event_surface_described: false
       agent_skills: false
       well_known_catalog: false
@@ -44,7 +42,7 @@ kin_score:
     applies: true
     regime: Education & Research
     regime_id: education
-    score: 48.1
+    score: 25.5
     matched_via: tags
   provenance:
     conformance: first-party
